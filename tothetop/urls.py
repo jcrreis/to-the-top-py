@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
+from django.views.decorators.csrf import csrf_exempt
 from django.urls import path , include
 from . import views
 
@@ -25,5 +26,5 @@ urlpatterns = [
     path('games/' , views.GameList.as_view()),
     path('upvotes/' , views.UpvoteList.as_view()),
     path('users/', views.UserList.as_view()),
-    path('upvote/<int:game_id>/<int:user_id>' , views.upvoteGame)
+    path('upvote/<int:game_id>/<int:user_id>' ,views.upvoteGame)
 ]
