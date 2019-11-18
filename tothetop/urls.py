@@ -16,15 +16,19 @@ Including another URLconf
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.views.decorators.csrf import csrf_exempt
-from django.urls import path , include
+from django.urls import path, include
 from . import views
 
 urlpatterns = [
+    path('', views.api_root),
     path('', include('rest_auth.urls')),
     path('admin/', admin.site.urls),
-    path('games/<str:game_name>', views.getGame ),
-    path('games/' , views.GameList.as_view()),
-    path('upvotes/' , views.UpvoteList.as_view()),
-    path('users/', views.UserList.as_view()),
-    path('upvote/<int:game_id>/<int:user_id>' ,views.upvoteGame)
+    path('games/<int:game_id>', views.GameList.gameEndpoint),
+    path('games/', views.GameList.gamesEndpoint, name="games-list"),
+    path('upvotes/', views.UpvoteList.as_view(), name="upvotes-list"),
+    path('users/', views.UserList.usersEndpoint, name="users-list"),
+    path('upvote/<int:game_id>/<int:user_id>', views.UpvoteList.upvoteGame),
+    path('users/<int:user_id>', views.UserList.userEndpoint),
+    path('test/', views.UserList.test),
+
 ]
