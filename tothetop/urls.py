@@ -26,6 +26,7 @@ urlpatterns = [
     path('register/',views.RegisterUserView.as_view(),name= 'user'),
     path('games/<int:game_id>', views.GameList.gameEndpoint),
     path('games/', views.GameList.gamesEndpoint, name="games-list"),
+    path('users/', views.UserList.usersEndpoint , name = 'user-list'),
     path('upvotes/games/<int:game_id>', views.UpvoteList.upvotesByGameEndpoint),
     path('upvotes/', views.UpvoteList.allupvotes, name="upvotes-list"),
 

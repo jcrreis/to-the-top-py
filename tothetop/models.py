@@ -20,5 +20,6 @@ class Game(models.Model):
 class Upvote(models.Model):
 	game = models.ForeignKey(Game, on_delete=models.CASCADE)
 	user = models.ForeignKey(User , on_delete = models.CASCADE)
-
+	class Meta:
+		unique_together = [['user','game']]
 
