@@ -23,12 +23,10 @@ urlpatterns = [
     path('', views.api_root),
     path('', include('rest_auth.urls')),
     path('admin/', admin.site.urls),
+    path('register/',views.RegisterUserView.as_view(),name= 'user'),
     path('games/<int:game_id>', views.GameList.gameEndpoint),
     path('games/', views.GameList.gamesEndpoint, name="games-list"),
-    path('upvotes/', views.UpvoteList.as_view(), name="upvotes-list"),
-    path('users/', views.UserList.usersEndpoint, name="users-list"),
-    path('upvote/<int:game_id>/<int:user_id>', views.UpvoteList.upvoteGame),
-    path('users/<int:user_id>', views.UserList.userEndpoint),
-    path('test/', views.UserList.test),
+    path('upvotes/games/<int:game_id>', views.UpvoteList.upvotesByGameEndpoint),
+    path('upvotes/', views.UpvoteList.allupvotes, name="upvotes-list"),
 
 ]

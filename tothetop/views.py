@@ -16,22 +16,23 @@ from rest_framework.decorators import api_view
 from rest_framework.reverse import reverse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
+from django.contrib.auth import get_user_model
+from rest_framework.permissions import IsAuthenticated,AllowAny
 
+# class CustomValidation(APIException):
+#     status_code=status.HTTP_403_FORBIDDEN
+#     default_detail = 'A server error occurred.'
 
-class CustomValidation(APIException):
-    status_code=status.HTTP_403_FORBIDDEN
-    default_detail = 'A server error occurred.'
+#     def __init__(self, detail, field, status_code):
+#         if status_code is not None:self.status_code = status_code
+#         if detail is not None:
+#             self.detail = {field: force_text(detail)}
+#         else: self.detail = {'detail': force_text(self.default_detail)}
 
-    def __init__(self, detail, field, status_code):
-        if status_code is not None:self.status_code = status_code
-        if detail is not None:
-            self.detail = {field: force_text(detail)}
-        else: self.detail = {'detail': force_text(self.default_detail)}
-
-def authe(request):
-	print(request.user.is_authenticated)
-	if(not request.user.is_authenticated):
-		raise CustomValidation('Access denied','username', status_code=status.HTTP_403_FORBIDDEN)
+# def authe(request):
+# 	print(request.user.is_authenticated)
+# 	if(not request.user.is_authenticated):
+# 		raise CustomValidation('Access denied','username', status_code=status.HTTP_403_FORBIDDEN)
 
 
 
@@ -45,24 +46,24 @@ def api_root(request, format=None):
     })
 
 
-class CustomValidation(APIException):
-    status_code = status.HTTP_403_FORBIDDEN
-    default_detail = 'A server error occurred.'
+# class CustomValidation(APIException):
+#     status_code = status.HTTP_403_FORBIDDEN
+#     default_detail = 'A server error occurred.'
 
-    def __init__(self, detail, field, status_code):
-        if status_code is not None:
-            self.status_code = status_code
-        if detail is not None:
-            self.detail = {field: force_text(detail)}
-        else:
-            self.detail = {'detail': force_text(self.default_detail)}
+#     def __init__(self, detail, field, status_code):
+#         if status_code is not None:
+#             self.status_code = status_code
+#         if detail is not None:
+#             self.detail = {field: force_text(detail)}
+#         else:
+#             self.detail = {'detail': force_text(self.default_detail)}
 
 
-def authe(request):
-    print(request.user.is_authenticated)
-    if(not request.user.is_authenticated):
-        raise CustomValidation('Access denied', 'username',
-                               status_code=status.HTTP_403_FORBIDDEN)
+# def authe(request):
+#     print(request.user.is_authenticated)
+#     if(not request.user.is_authenticated):
+#         raise CustomValidation('Access denied', 'username',
+#                                status_code=status.HTTP_403_FORBIDDEN)
 
 
 # GAME ENDPOINTS
@@ -74,7 +75,6 @@ class GameList(generics.ListAPIView):
 
     /games/
     """
-    @csrf_exempt
     def gamesEndpoint(request):
         if request.method == 'GET':
             games = Game.objects.all()
@@ -97,7 +97,7 @@ class GameList(generics.ListAPIView):
 
     /games/{game_id}/
     """
-    @csrf_exempt
+
     def gameEndpoint(request, game_id):
         try:
             game = Game.objects.get(pk=game_id)
@@ -133,23 +133,46 @@ class GameList(generics.ListAPIView):
 
 
 class UpvoteList(generics.ListAPIView):
-    queryset = Upvote.objects.all()
-    serializer_class = UpvoteSerializer
-
-    def upvoteGame(request, game_id, user_id):
-        authe(request)
-        game_id = Game.objects.get(id=game_id)
-        user_id = User.objects.get(id=user_id)
-        Upvote.objects.create(game=game_id, user=user_id)
-        return HttpResponse("Fixinho")
+    """
+    List all upvotes of a game or upvote that game
+    /upvotes/games/{game_id}
+    """
+    def upvotesByGameEndpoint(request,game_id):
+        method = request.method
+        if method == 'GET':
+            upvotes = Upvote.objects.get(game=game_id)
+            serializer = UpvoteSerializer(upvotes, many=True)
+            return JsonResponse(serializer.data,safe = False)
+        elif method == 'POST':
+            user = request.user
+            if Upvote.objects.get(game = game_id , user = user) is None:
+                data = JSONParser().parse(request)
+                serializer = UpvoteSerializer(data=data)
+                if serializer.is_valid():
+                    serializer.save()
+                    return JsonResponse(serializer.data, status=201)
+            return JsonResponse(serializer.errors, status=400)
+    """ 
+    List all upvotes
+    """
+    def allupvotes(request):
+        upvotes = Upvote.objects.all()
+        serializer = UpvoteSerializer(upvotes, many=True)
+        return JsonResponse(serializer.data, safe=False)
+        
 
 
 # USER ENDPOINTS
 
-class UserList(generics.ListAPIView):
 
-    def test(request):
-        return HttpResponse(status=403)
+class RegisterUserView(generics.CreateAPIView):
+    model = get_user_model()
+    permission_classes = (AllowAny,)
+    serializer_class = UserSerializer
+
+
+class UserList(generics.ListAPIView):
+    
     """
     List all users, or create a new user
 
@@ -180,7 +203,7 @@ class UserList(generics.ListAPIView):
 
     /users/{user_id}/
     """
-    @csrf_exempt
+    
     def userEndpoint(request, user_id):
         method = request.method
 
