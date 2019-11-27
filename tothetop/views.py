@@ -19,6 +19,7 @@ from rest_framework.parsers import JSONParser
 from django.contrib.auth import get_user_model
 from rest_framework.permissions import IsAuthenticated,AllowAny
 
+
 # class CustomValidation(APIException):
 #     status_code=status.HTTP_403_FORBIDDEN
 #     default_detail = 'A server error occurred.'
@@ -168,8 +169,8 @@ class RegisterUserView(generics.CreateAPIView):
     model = get_user_model()
     permission_classes = (AllowAny,)
     serializer_class = UserSerializer
-
-
+    print(UserSerializer)
+    
 class UserList(generics.ListAPIView):
     
     """
@@ -196,6 +197,9 @@ class UserList(generics.ListAPIView):
 
         else:
             HttpResponse(status=405)
+
+
+
 
     """
     Retrieve, delete or update a user
