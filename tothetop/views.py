@@ -153,7 +153,7 @@ class UpvoteList(generics.ListAPIView):
             serializer = UpvoteSerializer(data=data)
             if serializer.is_valid():
                 serializer.save()
-                return JsonResponse(serializer.data, status=201)
+                return JsonResponse(GameSerializer(Game.objects.get(pk=data['game'])).data, status=201)
             return JsonResponse(serializer.errors, status=400)
     """ 
     List all upvotes
