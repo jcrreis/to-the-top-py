@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 User._meta.get_field('email')._unique = True
 
 class Game(models.Model):
-	id = models.AutoField(primary_key= True)
 	name = models.CharField(max_length=200)
 	price = models.FloatField(blank = True)
 	description = models.CharField(max_length = 1000,blank = True)

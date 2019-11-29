@@ -16,7 +16,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = User
-		fields = ('password' , 'username' , 'email')	
+		fields = ('id' , 'password' , 'username' , 'email')	
 
 
 class GameSerializer(serializers.ModelSerializer):

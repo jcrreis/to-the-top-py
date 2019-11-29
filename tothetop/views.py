@@ -18,6 +18,7 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from django.contrib.auth import get_user_model
 from rest_framework.permissions import IsAuthenticated,AllowAny
+import json
 
 
 # class CustomValidation(APIException):
@@ -84,6 +85,8 @@ class GameList(generics.ListAPIView):
 
         elif request.method == 'POST':
             data = JSONParser().parse(request)
+            data['user'] = request.user.id
+            print(data)
             serializer = GameSerializer(data=data)
             if serializer.is_valid():
                 serializer.save()
@@ -169,7 +172,7 @@ class RegisterUserView(generics.CreateAPIView):
     model = get_user_model()
     permission_classes = (AllowAny,)
     serializer_class = UserSerializer
-    print(UserSerializer)
+    
     
 class UserList(generics.ListAPIView):
     
