@@ -16,6 +16,9 @@ class Game(models.Model):
 	def getName(self):
 		return self.name
 
+	def upvotes(self):
+		return Upvote.objects.filter(game=self.id).count()
+
 
 class Upvote(models.Model):
 	game = models.ForeignKey(Game, on_delete=models.CASCADE)

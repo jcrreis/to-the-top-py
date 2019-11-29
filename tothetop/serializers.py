@@ -20,12 +20,13 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class GameSerializer(serializers.ModelSerializer):
+	upvotes = serializers.ReadOnlyField()
 	def create(self , validated_data):
 		return Game.objects.create(**validated_data)
-	
+
 	class Meta:
 		model = Game
-		fields = ('id','name','price','description','storeLink','trailerUrl','user')
+		fields = ('id','name','price','description','storeLink','trailerUrl','user','upvotes')
 	
 
 class UpvoteSerializer(serializers.ModelSerializer):
