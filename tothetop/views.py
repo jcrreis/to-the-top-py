@@ -148,8 +148,8 @@ class UpvoteList(generics.ListAPIView):
             serializer = UpvoteSerializer(upvotes, many=True)
             return JsonResponse(serializer.data,safe = False)
         elif method == 'POST':
-            user = request.user
             data = JSONParser().parse(request)
+            data['user'] = request.user.id
             serializer = UpvoteSerializer(data=data)
             if serializer.is_valid():
                 serializer.save()
