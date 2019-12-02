@@ -21,21 +21,6 @@ from rest_framework.permissions import IsAuthenticated,AllowAny
 import json
 
 
-# class CustomValidation(APIException):
-#     status_code=status.HTTP_403_FORBIDDEN
-#     default_detail = 'A server error occurred.'
-
-#     def __init__(self, detail, field, status_code):
-#         if status_code is not None:self.status_code = status_code
-#         if detail is not None:
-#             self.detail = {field: force_text(detail)}
-#         else: self.detail = {'detail': force_text(self.default_detail)}
-
-# def authe(request):
-# 	print(request.user.is_authenticated)
-# 	if(not request.user.is_authenticated):
-# 		raise CustomValidation('Access denied','username', status_code=status.HTTP_403_FORBIDDEN)
-
 
 
 
@@ -48,24 +33,14 @@ def api_root(request, format=None):
     })
 
 
-# class CustomValidation(APIException):
-#     status_code = status.HTTP_403_FORBIDDEN
-#     default_detail = 'A server error occurred.'
-
-#     def __init__(self, detail, field, status_code):
-#         if status_code is not None:
-#             self.status_code = status_code
-#         if detail is not None:
-#             self.detail = {field: force_text(detail)}
-#         else:
-#             self.detail = {'detail': force_text(self.default_detail)}
-
-
-# def authe(request):
-#     print(request.user.is_authenticated)
-#     if(not request.user.is_authenticated):
-#         raise CustomValidation('Access denied', 'username',
-#                                status_code=status.HTTP_403_FORBIDDEN)
+@api_view(['GET'])
+def isAuthenticatedUser(request):
+    """Returns an JSON with info about current user"""
+    response = {}
+    response['is_authenticated'] = request.user.is_authenticated
+    response['user'] = request.user.id
+    response['username'] = request.user.username
+    return JsonResponse(data=response,status=200,safe=False)
 
 
 # GAME ENDPOINTS
@@ -155,6 +130,16 @@ class UpvoteList(generics.ListAPIView):
                 serializer.save()
                 return JsonResponse(GameSerializer(Game.objects.get(pk=data['game'])).data, status=201)
             return JsonResponse(serializer.errors, status=400)
+        elif method == 'DELETE':
+            if(request.user.id == None):
+                print(request.user.id)
+                return JsonResponse(data="User not logged in", status=401, safe=False)
+            else:
+                upvote = Upvote.objects.get(game=game_id,user=request.user.id)
+                upvote.delete()
+                return JsonResponse(data="",status=201,safe=False)
+        return JsonResponse(data="Not found", status = 404, safe=False)
+
     """ 
     List all upvotes
     """

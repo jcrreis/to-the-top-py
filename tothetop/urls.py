@@ -22,6 +22,7 @@ from . import views
 urlpatterns = [
     path('', views.api_root),
     path('', include('rest_auth.urls')),
+    path('authenticated',views.isAuthenticatedUser),
     path('admin/', admin.site.urls),
     path('register/',views.RegisterUserView.as_view(),name= 'user'),
     path('games/<int:game_id>', views.GameList.gameEndpoint),
