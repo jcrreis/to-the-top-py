@@ -22,7 +22,6 @@ from . import views
 urlpatterns = [
     path('', views.api_root),
     path('', include('rest_auth.urls')),
-    path('authenticated',views.isAuthenticatedUser),
     path('admin/', admin.site.urls),
     path('register/',views.RegisterUserView.as_view(),name= 'user'),
     path('games/<int:game_id>', views.GameList.gameEndpoint),
@@ -30,5 +29,6 @@ urlpatterns = [
     path('users/', views.UserList.usersEndpoint , name = 'user-list'),
     path('upvotes/games/<int:game_id>', views.UpvoteList.upvotesByGameEndpoint),
     path('upvotes/', views.UpvoteList.allupvotes, name="upvotes-list"),
+    path('upvotes/users/<int:user_id>', views.UpvoteList.upvotesByUserEndpoint),
 
 ]

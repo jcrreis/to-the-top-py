@@ -32,17 +32,6 @@ def api_root(request, format=None):
         'upvotes': reverse('upvotes-list', request=request, format=format)
     })
 
-
-@api_view(['GET'])
-def isAuthenticatedUser(request):
-    """Returns an JSON with info about current user"""
-    response = {}
-    response['is_authenticated'] = request.user.is_authenticated
-    response['user'] = request.user.id
-    response['username'] = request.user.username
-    return JsonResponse(data=response,status=200,safe=False)
-
-
 # GAME ENDPOINTS
 
 
@@ -140,6 +129,19 @@ class UpvoteList(generics.ListAPIView):
                 return JsonResponse(data="",status=201,safe=False)
         return JsonResponse(data="Not found", status = 404, safe=False)
 
+    """
+        List all upvotes of a user
+        /upvotes/users/{user_id}
+    """
+    def upvotesByUserEndpoint(request,user_id):
+        method = request.method
+        if method == 'GET':
+            upvotes = Upvote.objects.filter(user=user_id)
+            serializer = UpvoteSerializer(upvotes, many=True)
+            return JsonResponse(serializer.data,safe = False)
+    
+    
+    
     """ 
     List all upvotes
     """
