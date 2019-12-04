@@ -140,8 +140,15 @@ class UpvoteList(generics.ListAPIView):
             serializer = UpvoteSerializer(upvotes, many=True)
             return JsonResponse(serializer.data,safe = False)
     
+    def upvotesByUserGameEndpoint(request,user_id):
+         method = request.method
+         if method == 'GET':
+          upvotes = Upvote.objects.filter(user=user_id)
+          games = Game.objects.filter(id__in= upvotes.values('game'))
+          serializer = GameSerializer(games, many=True)
+          return JsonResponse(serializer.data, safe=False)
     
-    
+
     """ 
     List all upvotes
     """
@@ -149,6 +156,7 @@ class UpvoteList(generics.ListAPIView):
         upvotes = Upvote.objects.all()
         serializer = UpvoteSerializer(upvotes, many=True)
         return JsonResponse(serializer.data, safe=False)
+    
         
 
 
@@ -224,3 +232,17 @@ class UserList(generics.ListAPIView):
         # else:
             #print("estive aqui")
             # HttpResponse(status=405)
+    """
+    /users/{user_id}/games
+    """  
+    def userGameEndpoint(request,user_id):
+        method = request.method
+        try:
+            user = User.objects.get(pk=user_id)
+        except User.DoesNotExist:
+            return HttpResponse(status=404)
+
+        if method == 'GET':
+            games = Game.objects.filter(user=user_id)
+            serializer = GameSerializer(games, many=True)
+            return JsonResponse(serializer.data, safe=False)

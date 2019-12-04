@@ -27,8 +27,10 @@ urlpatterns = [
     path('games/<int:game_id>', views.GameList.gameEndpoint),
     path('games/', views.GameList.gamesEndpoint, name="games-list"),
     path('users/', views.UserList.usersEndpoint , name = 'user-list'),
+    path('users/<int:user_id>/games', views.UserList.userGameEndpoint),
     path('upvotes/games/<int:game_id>', views.UpvoteList.upvotesByGameEndpoint),
     path('upvotes/', views.UpvoteList.allupvotes, name="upvotes-list"),
     path('upvotes/users/<int:user_id>', views.UpvoteList.upvotesByUserEndpoint),
+    path('upvotes/users/<int:user_id>/games', views.UpvoteList.upvotesByUserGameEndpoint),
 
 ]
