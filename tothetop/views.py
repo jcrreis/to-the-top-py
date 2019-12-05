@@ -78,10 +78,12 @@ class GameList(generics.ListAPIView):
 
         elif request.method == 'PUT':
             data = JSONParser().parse(request)
+            data['user'] = request.user.id
             serializer = GameSerializer(game, data=data)
             if serializer.is_valid():
                 serializer.save()
                 return JsonResponse(serializer.data)
+            print(serializer.errors)
             return JsonResponse(serializer.errors, status=400)
 
         elif request.method == 'DELETE':
