@@ -8,9 +8,29 @@ from rest_framework import status
 from django.core import serializers
 from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
-from rest_framework.permissions import IsAuthenticated,AllowAny
+from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly
 from django.http import JsonResponse
 import json
+
+class GameEndpoint(generics.RetrieveUpdateDestroyAPIView):
+  model = Game
+  permission_classes = (IsAuthenticatedOrReadOnly,)
+  serializer_class = GameSerializer
+  queryset = Game.objects.all()
+
+  def put(self, request, pk):
+    try:
+      game = Game.objects.get(pk=pk)
+    except Game.DoesNotExist:
+      return HttpResponse(status=404)
+    data = JSONParser().parse(request)
+    data['user'] = request.user.id
+    serializer = GameSerializer(game, data=data)
+    if serializer.is_valid():
+      serializer.save()
+      return JsonResponse(serializer.data)
+    return JsonResponse(serializer.errors, status=400)
+
 
 class GameList(generics.ListAPIView):
     """
@@ -33,43 +53,6 @@ class GameList(generics.ListAPIView):
                 serializer.save()
                 return JsonResponse(serializer.data, status=201)
             return JsonResponse(serializer.errors, status=400)
-
-        else:
-            HttpResponse(status=405)
-
-    """
-    Retrive, update or delete a game
-
-    /games/{game_id}/
-    """
-
-    def gameEndpoint(request, game_id):
-        try:
-            game = Game.objects.get(pk=game_id)
-        except Game.DoesNotExist:
-            return HttpResponse(status=404)
-
-        if request.method == 'GET':
-            serializer = GameSerializer(game)
-            return JsonResponse(serializer.data)
-
-        elif request.method == 'PUT':
-            data = JSONParser().parse(request)
-            data['user'] = request.user.id
-            serializer = GameSerializer(game, data=data)
-            if serializer.is_valid():
-                serializer.save()
-                return JsonResponse(serializer.data)
-            return JsonResponse(serializer.errors, status=400)
-
-        elif request.method == 'DELETE':
-            user_requester = request.user.id  # id do user que faz o pedido
-            user_game = game.user.id  # id do user que publicou o jogo no site
-            if(user_requester == user_game):
-                game.delete()
-                return HttpResponse(status=204)
-            else:
-                return HttpResponse(status=403)
 
         else:
             HttpResponse(status=405)
