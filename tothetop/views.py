@@ -51,6 +51,7 @@ class GameList(generics.ListAPIView):
             data = JSONParser().parse(request)
             data['user'] = request.user.id
             print(data)
+            "FALTA VERIFICAR SE O USER ESTA LOGADO AQUI"
             serializer = GameSerializer(data=data)
             if serializer.is_valid():
                 serializer.save()
@@ -128,7 +129,7 @@ class UpvoteList(generics.ListAPIView):
             else:
                 upvote = Upvote.objects.get(game=game_id,user=request.user.id)
                 upvote.delete()
-                return JsonResponse(data="",status=201,safe=False)
+                return JsonResponse(GameSerializer(Game.objects.get(pk=game_id)).data,status=201,safe=False)
         return JsonResponse(data="Not found", status = 404, safe=False)
 
     """
