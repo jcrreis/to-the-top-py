@@ -19,6 +19,7 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from django.contrib.auth import get_user_model
 from rest_framework.permissions import IsAuthenticated,AllowAny
+from games.serializers import GameSerializer
 import json
 
 
