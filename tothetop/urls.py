@@ -15,22 +15,21 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
-from django.views.decorators.csrf import csrf_exempt
+
 from django.urls import path, include
-from . import views
+
 
 urlpatterns = [
     path('', views.api_root),
     path('', include('rest_auth.urls')),
     path('admin/', admin.site.urls),
-    path('register/',views.RegisterUserView.as_view(),name= 'user'),
-    path('games/<int:game_id>', views.GameList.gameEndpoint),
-    path('games/', views.GameList.gamesEndpoint, name="games-list"),
-    path('users/', views.UserList.usersEndpoint , name = 'user-list'),
-    path('users/<int:user_id>/games', views.UserList.userGameEndpoint),
-    path('upvotes/games/<int:game_id>', views.UpvoteList.upvotesByGameEndpoint),
-    path('upvotes/', views.UpvoteList.allupvotes, name="upvotes-list"),
-    path('upvotes/users/<int:user_id>', views.UpvoteList.upvotesByUserEndpoint),
-    path('upvotes/users/<int:user_id>/games', views.UpvoteList.upvotesByUserGameEndpoint),
+    path('/games',include('games.urls')),
+    path('register/',RegisterUserView.as_view(),name= 'user'),
+    path('users/', UserList.usersEndpoint , name = 'user-list'),
+    path('users/<int:user_id>/games', UserList.userGameEndpoint),
+    path('upvotes/games/<int:game_id>', UpvoteList.upvotesByGameEndpoint),
+    path('upvotes/', UpvoteList.allupvotes, name="upvotes-list"),
+    path('upvotes/users/<int:user_id>', UpvoteList.upvotesByUserEndpoint),
+    path('upvotes/users/<int:user_id>/games', UpvoteList.upvotesByUserGameEndpoint),
 
 ]
