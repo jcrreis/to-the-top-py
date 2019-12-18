@@ -2,12 +2,13 @@ from django.http import HttpResponse
 # from ..games.models import Game, Upvote
 from upvotes.models import Upvote
 from django.contrib.auth.models import User
+from games.models import Game
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.exceptions import APIException
 from django.utils.encoding import force_text
 from rest_framework import status
-from .serializers import UpvoteSerializer
+from upvotes.serializers import UpvoteSerializer
 from django.utils.encoding import force_text
 from rest_framework import status
 from django.core import serializers
