@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from .models import Upvote
+from upvotes.models import Upvote
 
 class Game(models.Model):
 	name = models.CharField(max_length=200)
