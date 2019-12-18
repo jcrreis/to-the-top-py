@@ -6,6 +6,8 @@ from rest_framework.exceptions import APIException
 from django.utils.encoding import force_text
 from rest_framework import status
 from  users.serializers import UserSerializer
+from games.serializers import GameSerializer
+from games.models import Game
 from django.utils.encoding import force_text
 from rest_framework import status
 from django.core import serializers
