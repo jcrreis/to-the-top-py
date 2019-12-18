@@ -15,21 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
-
+from users.views import RegisterUserView
 from django.urls import path, include
 
 
 urlpatterns = [
-    path('', views.api_root),
     path('', include('rest_auth.urls')),
     path('admin/', admin.site.urls),
-    path('/games',include('games.urls')),
+    path('games/',include('games.urls')),
+    path('users/',include('users.urls')),
+    path('upvotes/',include('upvotes.urls')),
     path('register/',RegisterUserView.as_view(),name= 'user'),
-    path('users/', UserList.usersEndpoint , name = 'user-list'),
-    path('users/<int:user_id>/games', UserList.userGameEndpoint),
-    path('upvotes/games/<int:game_id>', UpvoteList.upvotesByGameEndpoint),
-    path('upvotes/', UpvoteList.allupvotes, name="upvotes-list"),
-    path('upvotes/users/<int:user_id>', UpvoteList.upvotesByUserEndpoint),
-    path('upvotes/users/<int:user_id>/games', UpvoteList.upvotesByUserGameEndpoint),
-
 ]

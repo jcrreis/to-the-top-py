@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'rest_auth',
-    'games.apps.GamesConfig'
+    'games',
+    'upvotes',
 ]
 
 MIDDLEWARE = [
