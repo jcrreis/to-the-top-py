@@ -1,5 +1,4 @@
 from django.http import HttpResponse
-# from ..games.models import Game, Upvote
 from upvotes.models import Upvote
 from django.contrib.auth.models import User
 from games.models import Game
