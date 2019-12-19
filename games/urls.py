@@ -1,8 +1,8 @@
 from django.urls import path, include
-from .views import GameList, GameEndpoint
+from .views import GamesEndpoint, GameEndpoint
 
 urlpatterns = [
   path('<int:pk>',GameEndpoint.as_view()),
-  # path('<int:game_id>', GameList.gameEndpoint),
-  path('', GameList.gamesEndpoint, name="games-list"),
+  path('', GamesEndpoint.as_view(), name="games-list"),
+  
 ]
