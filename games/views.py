@@ -8,13 +8,14 @@ from rest_framework import status
 from django.core import serializers
 from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
-from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from games.permissions import IsOwnerOrReadOnly
 from django.http import JsonResponse
 import json
 
 class GameEndpoint(generics.RetrieveUpdateDestroyAPIView):
   model = Game
-  permission_classes = (IsAuthenticatedOrReadOnly,)
+  permission_classes = (IsOwnerOrReadOnly,)
   serializer_class = GameSerializer
   queryset = Game.objects.all()
 
