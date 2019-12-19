@@ -8,7 +8,7 @@ from rest_framework import status
 from django.core import serializers
 from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly,AllowAny
 from games.permissions import IsOwnerOrReadOnly
 from django.http import JsonResponse
 import json
@@ -33,4 +33,14 @@ class GamesEndpoint(generics.ListCreateAPIView):
   permission_classes = (IsAuthenticatedOrReadOnly,)
   serializer_class = GameSerializer
   queryset = Game.objects.all()
+
+"""
+/games/user/<int:pk>
+"""
+class UserGamesEndpoint(generics.ListAPIView):
+  model = Game
+  permission_classes = (AllowAny,)
+  serializer_class = GameSerializer
+  def get_queryset(self):
+    return Game.objects.filter(user=self.kwargs['pk'])
 
