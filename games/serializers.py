@@ -7,6 +7,8 @@ class GameSerializer(serializers.ModelSerializer):
   upvotes = serializers.ReadOnlyField()
 
   def create(self , validated_data):
+    validated_data['user'] = self.context['request'].user
+    
     return Game.objects.create(**validated_data)
 
   class Meta:

@@ -13,13 +13,21 @@ from games.permissions import IsOwnerOrReadOnly
 from django.http import JsonResponse
 import json
 
+
+"""
+/games/<int:pk>
+"""
 class GameEndpoint(generics.RetrieveUpdateDestroyAPIView):
   model = Game
-  permission_classes = (IsOwnerOrReadOnly,)
+  permission_classes = (IsOwnerOrReadOnly,IsAuthenticatedOrReadOnly)
   serializer_class = GameSerializer
   queryset = Game.objects.all()
 
 
+"""
+/games/
+
+"""
 class GamesEndpoint(generics.ListCreateAPIView):
   model = Game
   permission_classes = (IsAuthenticatedOrReadOnly,)
