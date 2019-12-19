@@ -11,4 +11,3 @@ class UpvoteSerializer(serializers.ModelSerializer):
   class Meta:
     model = Upvote
     fields = ('game' , 'user')
-    read_only_fields=('user','game',)

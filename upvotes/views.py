@@ -25,31 +25,32 @@ from django.db import IntegrityError
 
 
 
-class UpvoteListByGame(generics.ListCreateAPIView):
+class UpvoteListByGame(generics.GenericAPIView):
   """
   GET all game's upvotes or POST a new one
 
   /upvotes/games/<int:pk>
   """
-  model = Upvote
   permission_classes = (IsAuthenticatedOrReadOnly,)
-  serializer_class = UpvoteSerializer 
-  def get_queryset(self):
-    return Upvote.objects.filter(game=self.kwargs['pk'])
+  def get(self, request, *args, **kwargs):
+    upvotes = Upvote.objects.get(game=self.kwargs['pk'])
+    serializer = UpvoteSerializer(upvotes, many=True)
+    return JsonResponse(serializer.data,safe = False)
 
-  def perform_create(self, serializer):
-    user = self.request.user
-    game = self.kwargs['pk']
-    serializer.validated_data['user'] = user
-    serializer.validated_data['game'] = Game.objects.get(id=game)
-    serializer.save()
-  
-  def create(self, request, *args, **kwargs):
-    try:
-        return super(UpvoteListByGame, self).create(request, *args, **kwargs)
-    except IntegrityError:
-        return HttpResponse({'error: Upvote is already done'} , status = 409)
-    serializer_class = UpvoteSerializer
+  def post(self, request, *args, **kwargs):
+    data = {
+      "game": self.kwargs['pk'],
+      "user":request.user.id
+    }
+    serializer = UpvoteSerializer(data=data)
+    if serializer.is_valid():
+        serializer.save()
+        return JsonResponse(GameSerializer(Game.objects.get(pk=self.kwargs['pk'])).data, status=201)
+    else:
+      #TODO error verification
+      return JsonResponse(serializer.errors, status=409)
+
+
 
 
 class UpvoteListByUser(generics.ListAPIView):
@@ -73,16 +74,22 @@ class UpvotesList(generics.ListAPIView):
   serializer_class = UpvoteSerializer
   queryset = Upvote.objects.all()
 
-class DeleteOrRetrieveUserUpvote(generics.RetrieveDestroyAPIView):
+class DeleteOrRetrieveUserUpvote(generics.GenericAPIView):
   """
   Retrieve or delete a user upvote
 
   /upvotes/games/<int:game_id>/<int:user_id>
   """
-  model = Upvote
-  permission_classes = (IsOwnerOrReadOnly,)
-  serializer_class = UpvoteSerializer
-  def get_object(self):
-    return Upvote.objects.get(game=self.kwargs['game_id'],user=self.kwargs['user_id'])
+  def get(self, request, *args, **kwargs):
+    #TODO
+    
+  def delete(self, request, *args, **kwargs):
+    if(request.user.id == None):
+      print(request.user.id)
+      return JsonResponse(data="User not logged in", status=401, safe=False)
+    else:
+      upvote = Upvote.objects.get(game=self.kwargs['pk'],user=request.user.id)
+      upvote.delete()
+      return JsonResponse(data="",status=201,safe=False)
 
     

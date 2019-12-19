@@ -39,7 +39,7 @@ class GamesEndpoint(generics.ListCreateAPIView):
 """
 class UserGamesEndpoint(generics.ListAPIView):
   model = Game
-  permission_classes = (AllowAny,)
+  permission_classes = (IsAuthenticatedOrReadOnly,)
   serializer_class = GameSerializer
   def get_queryset(self):
     return Game.objects.filter(user=self.kwargs['pk'])
