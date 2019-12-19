@@ -1,10 +1,11 @@
 
 from django.urls import path, include
-from .views import UserList
+from .views import UsersList, UserList
 
 urlpatterns = [
-  path('<int:user_id>/games', UserList.userGameEndpoint),
-  path('', UserList.usersEndpoint , name = 'user-list'),
+  path('<int:pk>', UserList.as_view()),
+  path('', UsersList.as_view() , name = 'user-list'),
+
 ]
 
 
