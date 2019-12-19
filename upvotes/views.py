@@ -36,6 +36,11 @@ class UpvoteListByGame(generics.ListCreateAPIView):
   def get_queryset(self):
     return Upvote.objects.filter(game=self.kwargs['pk'])
 
+  def perform_create(self, serializer):
+    serializer.validated_data['user'] = self.request.user
+    serializer.validated_data['game'] = Game.objects.get(id=self.kwargs['pk'])
+    serializer.save()
+
 
 class UpvoteListByUser(generics.ListAPIView):
   """
