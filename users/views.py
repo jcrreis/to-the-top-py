@@ -15,6 +15,10 @@ Endpoint that registers a user with the given data , in the request body
 Only Handles Posts Requests
 """
 class RegisterUserView(generics.CreateAPIView):
+  """
+  Create new users
+  /register
+  """
   model = get_user_model()
   permission_classes = (AllowAny,)
   serializer_class = UserSerializer
@@ -27,6 +31,10 @@ Endpoint that lists all registed users
 Only Handles Get Requests , used for listing a collection of models
 """
 class UsersList(generics.ListAPIView):
+  """
+  List all users
+  /users
+  """
   model = get_user_model()
   permission_classes = (AllowAny,)
   serializer_class = UserSerializer
@@ -41,6 +49,10 @@ Only Handles Get Requests, used for listing a single model of instance
 """
 
 class UserList(generics.RetrieveAPIView):
+  """
+  Retrieve a user
+  /users/<int:pk>
+  """
   model = get_user_model()
   permission_classes = (AllowAny,)
   serializer_class = UserSerializer
