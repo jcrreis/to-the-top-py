@@ -21,6 +21,7 @@ from django.contrib.auth import get_user_model
 from rest_framework.permissions import IsAuthenticated,AllowAny,IsAuthenticatedOrReadOnly
 from games.serializers import GameSerializer
 import json
+from django.db import IntegrityError
 
 
 
@@ -32,14 +33,23 @@ class UpvoteListByGame(generics.ListCreateAPIView):
   """
   model = Upvote
   permission_classes = (IsAuthenticatedOrReadOnly,)
-  serializer_class = UpvoteSerializer
+  serializer_class = UpvoteSerializer 
   def get_queryset(self):
     return Upvote.objects.filter(game=self.kwargs['pk'])
 
   def perform_create(self, serializer):
-    serializer.validated_data['user'] = self.request.user
-    serializer.validated_data['game'] = Game.objects.get(id=self.kwargs['pk'])
+    user = self.request.user
+    game = self.kwargs['pk']
+    serializer.validated_data['user'] = user
+    serializer.validated_data['game'] = Game.objects.get(id=game)
     serializer.save()
+  
+  def create(self, request, *args, **kwargs):
+    try:
+        return super(UpvoteListByGame, self).create(request, *args, **kwargs)
+    except IntegrityError:
+        return HttpResponse({'error: Upvote is already done'} , status = 409)
+    serializer_class = UpvoteSerializer
 
 
 class UpvoteListByUser(generics.ListAPIView):
