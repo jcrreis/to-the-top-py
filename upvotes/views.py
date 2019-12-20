@@ -32,10 +32,6 @@ class UpvoteListByGame(generics.GenericAPIView):
   /upvotes/games/<int:pk>
   """
   permission_classes = (IsAuthenticatedOrReadOnly,)
-  def get(self, request, *args, **kwargs):
-    upvotes = Upvote.objects.get(game=self.kwargs['pk'])
-    serializer = UpvoteSerializer(upvotes, many=True)
-    return JsonResponse(serializer.data,safe = False)
 
   def post(self, request, *args, **kwargs):
     data = {
@@ -49,6 +45,19 @@ class UpvoteListByGame(generics.GenericAPIView):
     else:
       #TODO error verification
       return JsonResponse(serializer.errors, status=409)
+    
+  def get(self, request, *args, **kwargs):
+    game = Game.objects.get(id=self.kwargs['pk'])
+    serializer = GameSerializer(game)
+    serializer.data['user'] = request.user.id
+    return JsonResponse(serializer.data,status=200,safe=False)
+
+  def delete(self, request, *args, **kwargs):
+    upvote = Upvote.objects.get(game=self.kwargs['pk'],user=request.user.id)
+    game = Game.objects.get(id=self.kwargs['pk'])
+    serializer = GameSerializer(game)
+    upvote.delete()
+    return JsonResponse(serializer.data,status=201,safe=False)
 
 
 
@@ -87,24 +96,5 @@ class UpvotesList(generics.ListAPIView):
   serializer_class = UpvoteSerializer
   queryset = Upvote.objects.all()
 
-class DeleteOrRetrieveUserUpvote(generics.GenericAPIView):
-  """
-  Retrieve or delete a user upvote
-
-  /upvotes/games/<int:game_id>/<int:user_id>
-  """
-  permission_classes = (IsOwnerOrReadOnly,)
-  def get(self, request, *args, **kwargs):
-    game = Game.objects.get(id=self.kwargs['game_id'])
-    serializer = GameSerializer(game)
-    serializer.data['user'] = self.kwargs['user_id']
-    return JsonResponse(serializer.data,status=200,safe=False)
-
-  def delete(self, request, *args, **kwargs):
-    upvote = Upvote.objects.get(game=self.kwargs['game_id'],user=self.kwargs['user_id'])
-    game = Game.objects.get(id=self.kwargs['game_id'])
-    serializer = GameSerializer(game)
-    upvote.delete()
-    return JsonResponse(serializer.data,status=201,safe=False)
 
     
