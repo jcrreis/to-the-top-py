@@ -64,6 +64,19 @@ class UpvoteListByUser(generics.ListAPIView):
   def get_queryset(self):
     return Upvote.objects.filter(user=self.kwargs['pk'])
 
+class UpvoteListByUserWithGameDetails(generics.GenericAPIView):
+  """
+  GET all upvotes of user
+  /upvotes/users/<int:pk>/games
+  """
+  permission_classes = (IsOwnerOrReadOnly,)
+  def get(self, request, *args, **kwargs):
+    upvotes = Upvote.objects.filter(user=self.kwargs['pk'])
+    games = Game.objects.filter(id__in= upvotes.values('game'))
+    serializer = GameSerializer(games, many=True)
+    return JsonResponse(serializer.data, safe=False)
+
+
 class UpvotesList(generics.ListAPIView):
   """
   GET all upvotes
@@ -86,6 +99,7 @@ class DeleteOrRetrieveUserUpvote(generics.GenericAPIView):
     serializer = GameSerializer(game)
     serializer.data['user'] = self.kwargs['user_id']
     return JsonResponse(serializer.data,status=200,safe=False)
+
   def delete(self, request, *args, **kwargs):
     upvote = Upvote.objects.get(game=self.kwargs['game_id'],user=self.kwargs['user_id'])
     game = Game.objects.get(id=self.kwargs['game_id'])
