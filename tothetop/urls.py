@@ -17,7 +17,8 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from users.views import RegisterUserView
 from django.urls import path, include
-
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('', include('rest_auth.urls')),
@@ -26,4 +27,4 @@ urlpatterns = [
     path('users/',include('users.urls')),
     path('upvotes/',include('upvotes.urls')),
     path('register/',RegisterUserView.as_view(),name= 'user'),
-]
+] +  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 
