@@ -22,7 +22,7 @@ from rest_framework.permissions import IsAuthenticated,AllowAny,IsAuthenticatedO
 from games.serializers import GameSerializer
 import json
 from django.db import IntegrityError
-
+from games.permissions import IsOwnerOrReadOnly
 
 
 class UpvoteListByGame(generics.GenericAPIView):
@@ -80,16 +80,17 @@ class DeleteOrRetrieveUserUpvote(generics.GenericAPIView):
 
   /upvotes/games/<int:game_id>/<int:user_id>
   """
+  permission_classes = (IsOwnerOrReadOnly,)
   def get(self, request, *args, **kwargs):
-    #TODO
-    
+    game = Game.objects.get(id=self.kwargs['game_id'])
+    serializer = GameSerializer(game)
+    serializer.data['user'] = self.kwargs['user_id']
+    return JsonResponse(serializer.data,status=200,safe=False)
   def delete(self, request, *args, **kwargs):
-    if(request.user.id == None):
-      print(request.user.id)
-      return JsonResponse(data="User not logged in", status=401, safe=False)
-    else:
-      upvote = Upvote.objects.get(game=self.kwargs['pk'],user=request.user.id)
-      upvote.delete()
-      return JsonResponse(data="",status=201,safe=False)
+    upvote = Upvote.objects.get(game=self.kwargs['game_id'],user=self.kwargs['user_id'])
+    game = Game.objects.get(id=self.kwargs['game_id'])
+    serializer = GameSerializer(game)
+    upvote.delete()
+    return JsonResponse(serializer.data,status=201,safe=False)
 
     
