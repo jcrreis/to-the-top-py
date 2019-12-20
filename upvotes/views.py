@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from upvotes.models import Upvote
+from games.permissions import IsOwnerOrReadOnly
 from django.contrib.auth.models import User
 from games.models import Game
 from rest_framework import generics
@@ -17,65 +18,83 @@ from rest_framework.reverse import reverse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from django.contrib.auth import get_user_model
-from rest_framework.permissions import IsAuthenticated,AllowAny
+from rest_framework.permissions import IsAuthenticated,AllowAny,IsAuthenticatedOrReadOnly
 from games.serializers import GameSerializer
 import json
+from django.db import IntegrityError
+from games.permissions import IsOwnerOrReadOnly
 
 
-class UpvoteList(generics.ListAPIView):
-    """
-    List all upvotes of a game or upvote that game
-    /upvotes/games/{game_id}
-    """
-    def upvotesByGameEndpoint(request,game_id):
-        method = request.method
-        if method == 'GET':
-            upvotes = Upvote.objects.get(game=game_id)
-            serializer = UpvoteSerializer(upvotes, many=True)
-            return JsonResponse(serializer.data,safe = False)
-        elif method == 'POST':
-            data = JSONParser().parse(request)
-            data['user'] = request.user.id
-            serializer = UpvoteSerializer(data=data)
-            if serializer.is_valid():
-                serializer.save()
-                return JsonResponse(GameSerializer(Game.objects.get(pk=data['game'])).data, status=201)
-            return JsonResponse(serializer.errors, status=400)
-        elif method == 'DELETE':
-            if(request.user.id == None):
-                print(request.user.id)
-                return JsonResponse(data="User not logged in", status=401, safe=False)
-            else:
-                upvote = Upvote.objects.get(game=game_id,user=request.user.id)
-                upvote.delete()
-                return JsonResponse(GameSerializer(Game.objects.get(pk=game_id)).data,status=201,safe=False)
-        return JsonResponse(data="Not found", status = 404, safe=False)
+class UpvoteListByGame(generics.GenericAPIView):
+  """
+  GET all game's upvotes or POST a new one
 
-    """
-        List all upvotes of a user
-        /upvotes/users/{user_id}
-    """
-    def upvotesByUserEndpoint(request,user_id):
-        method = request.method
-        if method == 'GET':
-            upvotes = Upvote.objects.filter(user=user_id)
-            serializer = UpvoteSerializer(upvotes, many=True)
-            return JsonResponse(serializer.data,safe = False)
+  /upvotes/games/<int:pk>
+  """
+  permission_classes = (IsAuthenticatedOrReadOnly,)
+
+  def post(self, request, *args, **kwargs):
+    data = {
+      "game": self.kwargs['pk'],
+      "user":request.user.id
+    }
+    serializer = UpvoteSerializer(data=data)
+    if serializer.is_valid():
+        serializer.save()
+        return JsonResponse(GameSerializer(Game.objects.get(pk=self.kwargs['pk'])).data, status=201)
+    else:
+      #TODO error verification
+      return JsonResponse(serializer.errors, status=409)
     
-    def upvotesByUserGameEndpoint(request,user_id):
-         method = request.method
-         if method == 'GET':
-          upvotes = Upvote.objects.filter(user=user_id)
-          games = Game.objects.filter(id__in= upvotes.values('game'))
-          serializer = GameSerializer(games, many=True)
-          return JsonResponse(serializer.data, safe=False)
-    
+  def get(self, request, *args, **kwargs):
+    game = Game.objects.get(id=self.kwargs['pk'])
+    serializer = GameSerializer(game)
+    serializer.data['user'] = request.user.id
+    return JsonResponse(serializer.data,status=200,safe=False)
 
-    """ 
-    List all upvotes
-    """
-    def allupvotes(request):
-        upvotes = Upvote.objects.all()
-        serializer = UpvoteSerializer(upvotes, many=True)
-        return JsonResponse(serializer.data, safe=False)
+  def delete(self, request, *args, **kwargs):
+    upvote = Upvote.objects.get(game=self.kwargs['pk'],user=request.user.id)
+    game = Game.objects.get(id=self.kwargs['pk'])
+    serializer = GameSerializer(game)
+    upvote.delete()
+    return JsonResponse(serializer.data,status=201,safe=False)
+
+
+
+
+class UpvoteListByUser(generics.ListAPIView):
+  """
+  GET all upvotes of user
+  /upvotes/users/<int:pk>
+  """
+  model = Upvote
+  permission_classes = (AllowAny,)
+  serializer_class = UpvoteSerializer
+  def get_queryset(self):
+    return Upvote.objects.filter(user=self.kwargs['pk'])
+
+class UpvoteListByUserWithGameDetails(generics.GenericAPIView):
+  """
+  GET all upvotes of user
+  /upvotes/users/<int:pk>/games
+  """
+  permission_classes = (IsOwnerOrReadOnly,)
+  def get(self, request, *args, **kwargs):
+    upvotes = Upvote.objects.filter(user=self.kwargs['pk'])
+    games = Game.objects.filter(id__in= upvotes.values('game'))
+    serializer = GameSerializer(games, many=True)
+    return JsonResponse(serializer.data, safe=False)
+
+
+class UpvotesList(generics.ListAPIView):
+  """
+  GET all upvotes
+  /upvotes
+  """
+  model = Upvote
+  permission_classes = (AllowAny,)
+  serializer_class = UpvoteSerializer
+  queryset = Upvote.objects.all()
+
+
     

@@ -1,10 +1,11 @@
 from django.urls import path, include
-from .views import UpvoteList
+from .views import UpvoteListByGame,UpvotesList, UpvoteListByUser,UpvoteListByUserWithGameDetails
+
 
 urlpatterns = [
-  path('games/<int:game_id>', UpvoteList.upvotesByGameEndpoint),
-  path('', UpvoteList.allupvotes, name="upvotes-list"),
-  path('users/<int:user_id>',UpvoteList.upvotesByUserEndpoint),
-  path('users/<int:user_id>/games', UpvoteList.upvotesByUserGameEndpoint),
+  path('games/<int:pk>', UpvoteListByGame.as_view()),
+  path('', UpvotesList.as_view(), name="upvotes-list"),
+  path('users/<int:pk>',UpvoteListByUser.as_view()),
+  path('users/<int:pk>/games', UpvoteListByUserWithGameDetails.as_view())
 ]
 
