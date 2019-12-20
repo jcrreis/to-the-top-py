@@ -19,7 +19,7 @@ import json
 """
 class GameEndpoint(generics.RetrieveUpdateDestroyAPIView):
   model = Game
-  permission_classes = (IsOwnerOrReadOnly,IsAuthenticatedOrReadOnly)
+  permission_classes = (IsOwnerOrReadOnly,)
   serializer_class = GameSerializer
   queryset = Game.objects.all()
 
