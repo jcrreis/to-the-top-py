@@ -9,7 +9,7 @@ class Game(models.Model):
 	storeLink = models.URLField(max_length = 300,blank = True)
 	trailerUrl = models.URLField(max_length = 300,blank = True)
 	user = models.ForeignKey(User , on_delete = models.CASCADE)
-	image = models.ImageField(upload_to='games', blank=True)
+	image = models.ImageField(upload_to='games',null=True, blank=True)
 
 	def __str__(self):
 	 return self.name
