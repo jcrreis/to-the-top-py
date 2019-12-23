@@ -42,7 +42,8 @@ class UpvoteListByGame(generics.GenericAPIView):
     if serializer.is_valid():
         serializer.save()
         gameSerializer = GameSerializer(Game.objects.get(pk=self.kwargs['pk']))
-        imgAbsolutePath = 'http://localhost:8000'+gameSerializer.data['image']
+        hostUrl = 'http://'+request.get_host()
+        imgAbsolutePath = hostUrl+gameSerializer.data['image']
         gameSerializer._data['image'] = imgAbsolutePath
         return JsonResponse(gameSerializer.data, status=201)
     else:
@@ -59,7 +60,8 @@ class UpvoteListByGame(generics.GenericAPIView):
     upvote = Upvote.objects.get(game=self.kwargs['pk'],user=request.user.id)
     game = Game.objects.get(id=self.kwargs['pk'])
     serializer = GameSerializer(game)
-    imgAbsolutePath = 'http://localhost:8000'+serializer.data['image']
+    hostUrl = 'http://'+request.get_host()
+    imgAbsolutePath = hostUrl+serializer.data['image']
     serializer._data['image'] = imgAbsolutePath
     upvote.delete()
     return JsonResponse(serializer.data,status=201,safe=False)
