@@ -41,7 +41,10 @@ class UpvoteListByGame(generics.GenericAPIView):
     serializer = UpvoteSerializer(data=data)
     if serializer.is_valid():
         serializer.save()
-        return JsonResponse(GameSerializer(Game.objects.get(pk=self.kwargs['pk'])).data, status=201)
+        gameSerializer = GameSerializer(Game.objects.get(pk=self.kwargs['pk']))
+        imgAbsolutePath = 'http://localhost:8000'+gameSerializer.data['image']
+        gameSerializer._data['image'] = imgAbsolutePath
+        return JsonResponse(gameSerializer.data, status=201)
     else:
       #TODO error verification
       return JsonResponse(serializer.errors, status=409)
@@ -56,6 +59,8 @@ class UpvoteListByGame(generics.GenericAPIView):
     upvote = Upvote.objects.get(game=self.kwargs['pk'],user=request.user.id)
     game = Game.objects.get(id=self.kwargs['pk'])
     serializer = GameSerializer(game)
+    imgAbsolutePath = 'http://localhost:8000'+serializer.data['image']
+    serializer._data['image'] = imgAbsolutePath
     upvote.delete()
     return JsonResponse(serializer.data,status=201,safe=False)
 
