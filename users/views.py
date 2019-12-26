@@ -11,6 +11,7 @@ from .tokens import account_activation_token
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_text
 from django.http import HttpResponse
+from django.template.loader import render_to_string
 
 """
 /register/
@@ -30,8 +31,13 @@ class RegisterUserView(generics.CreateAPIView):
   def perform_create(self,serializer):
     user = serializer.save()
     token = account_activation_token.make_token(user)
-    uid = urlsafe_base64_encode(force_bytes(user.pk))
-    # email = EmailMessage( "Activate your account" , "Activation token is : " + token + " uid = " + uid, to=[user.email] )
+    message = render_to_string('active_email.html', {
+                'user': user,
+                'domain': 'localhost:8000',
+                'uid':urlsafe_base64_encode(force_bytes(user.pk)),
+                'token':account_activation_token.make_token(user),
+            })
+    # email = EmailMessage( "Activate your account" , message , to=[user.email] )
     # email.send()
 
 class ActivateUser(generics.GenericAPIView):
