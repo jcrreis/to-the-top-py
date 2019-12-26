@@ -111,7 +111,9 @@ AUTH_PASSWORD_VALIDATORS = [
     # },
 ]
 
-
+ACCOUNT_EMAIL_REQUIRED = True
+OLD_PASSWORD_FIELD_ENABLED = True
+LOGOUT_ON_PASSWORD_CHANGE = False
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
