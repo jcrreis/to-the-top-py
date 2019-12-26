@@ -20,8 +20,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media_root")
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'sk0rcherino123@gmail.com'
-EMAIL_HOST_PASSWORD = '3spargu3t3'
+EMAIL_HOST_USER = 'youremail@gmail.com'
+EMAIL_HOST_PASSWORD = 'your email password'
 EMAIL_PORT = 587
 
 # Quick-start development settings - unsuitable for production

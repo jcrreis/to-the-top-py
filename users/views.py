@@ -31,13 +31,12 @@ class RegisterUserView(generics.CreateAPIView):
     user = serializer.save()
     token = account_activation_token.make_token(user)
     uid = urlsafe_base64_encode(force_bytes(user.pk))
-    email = EmailMessage( "Activate your account" , "Activation token is : " + token + " uid = " + uid, to=[user.email] )
-    email.send()
+    # email = EmailMessage( "Activate your account" , "Activation token is : " + token + " uid = " + uid, to=[user.email] )
+    # email.send()
 
 class ActivateUser(generics.GenericAPIView):
   def post(self, request, *args, **kwargs):
     try:
-        print("IM HERE")
         uid = force_text(urlsafe_base64_decode(self.kwargs['uidb64']))
         user = User.objects.get(pk=uid)
     except(TypeError, ValueError, OverflowError, User.DoesNotExist):
