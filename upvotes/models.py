@@ -1,6 +1,6 @@
 from django.db import models
 from django.apps import apps
-from django.contrib.auth.models import User
+from users.models import User
 
 class Upvote(models.Model):
 	game = models.ForeignKey('games.Game', on_delete=models.CASCADE)
