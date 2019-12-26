@@ -6,6 +6,11 @@ from games.serializers import GameSerializer
 from games.models import Game
 from django.contrib.auth import get_user_model
 from rest_framework.permissions import IsAuthenticated,AllowAny
+from django.core.mail import EmailMessage
+from .tokens import account_activation_token
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_text
+from django.http import HttpResponse
 
 """
 /register/
@@ -22,6 +27,27 @@ class RegisterUserView(generics.CreateAPIView):
   model = get_user_model()
   permission_classes = (AllowAny,)
   serializer_class = UserSerializer
+  def perform_create(self,serializer):
+    user = serializer.save()
+    token = account_activation_token.make_token(user)
+    uid = urlsafe_base64_encode(force_bytes(user.pk))
+    email = EmailMessage( "Activate your account" , "Activation token is : " + token + " uid = " + uid, to=[user.email] )
+    email.send()
+
+class ActivateUser(generics.GenericAPIView):
+  def post(self, request, *args, **kwargs):
+    try:
+        print("IM HERE")
+        uid = force_text(urlsafe_base64_decode(self.kwargs['uidb64']))
+        user = User.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+    if user is not None and account_activation_token.check_token(user, self.kwargs['token']):
+        user.is_active = True
+        user.save()
+        return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
+    else:
+        return HttpResponse('Activation link is invalid!')
     
 """
 /users/
