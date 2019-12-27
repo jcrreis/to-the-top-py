@@ -5,13 +5,12 @@ User._meta.get_field('email')._unique = True
 
 class UserSerializer(serializers.ModelSerializer):
 
-  image = serializers.ImageField(required = False)
+  image = serializers.ImageField(required = False,allow_empty_file=True)
 
   def create(self , validated_data):
     user = User.objects.create(
       username = validated_data['username'],
       email = validated_data['email'],
-      image = validated_data['image']
     )
     user.set_password(validated_data['password'])
     user.save()
