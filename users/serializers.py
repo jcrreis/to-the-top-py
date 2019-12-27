@@ -1,12 +1,11 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User
-from django.contrib.auth import get_user_model
+from .models import User
 User._meta.get_field('email')._unique = True
 
 
 class UserSerializer(serializers.ModelSerializer):
 	def create(self , validated_data):
-		user = get_user_model().objects.create(
+		user = User.objects.create(
 			username = validated_data['username'],
 			email = validated_data['email']
 		)

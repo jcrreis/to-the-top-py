@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'users.apps.UsersConfig',
     'tothetop.apps.TotheTopConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -114,6 +115,9 @@ AUTH_PASSWORD_VALIDATORS = [
 ACCOUNT_EMAIL_REQUIRED = True
 OLD_PASSWORD_FIELD_ENABLED = True
 LOGOUT_ON_PASSWORD_CHANGE = False
+
+AUTH_USER_MODEL = 'users.User'
+
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
