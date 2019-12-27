@@ -8,7 +8,8 @@ class UserSerializer(serializers.ModelSerializer):
   image = serializers.ImageField(required = False)
 
   def create(self , validated_data):
-    print(validated_data)
+    if 'image' not in validated_data:
+      validated_data['image'] = None
     user = User.objects.create(
       username = validated_data['username'],
       email = validated_data['email'],
