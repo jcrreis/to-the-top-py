@@ -31,14 +31,14 @@ class RegisterUserView(generics.CreateAPIView):
   def perform_create(self,serializer):
     user = serializer.save()
     token = account_activation_token.make_token(user)
-    message = render_to_string('active_email.html', {
+    message = render_to_string('email_confirm.html', {
                 'user': user,
-                'domain': 'localhost:8000',
+                'domain': 'localhost:4200',
                 'uid':urlsafe_base64_encode(force_bytes(user.pk)),
                 'token':account_activation_token.make_token(user),
             })
-    # email = EmailMessage( "Activate your account" , message , to=[user.email] )
-    # email.send()
+    email = EmailMessage( "Activate your account" , message , to=[user.email] )
+    email.send()
 
 class ActivateUser(generics.GenericAPIView):
   def post(self, request, *args, **kwargs):

@@ -31,7 +31,7 @@ class User(AbstractUser):
     email = models.EmailField(('email address'), unique=True)
     image = models.ImageField(upload_to='games',null=True, blank=True)
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['email']
 
 
 
