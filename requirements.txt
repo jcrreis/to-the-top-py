@@ -8,6 +8,8 @@ djangorestframework==3.10.3
 mysqlclient==1.4.5
 Pillow==6.2.1
 PyMySQL==0.9.3
+python-decouple==3.3
+python-dotenv==0.10.3
 pytz==2019.3
 screen==1.0.1
 six==1.13.0
