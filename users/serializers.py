@@ -16,9 +16,10 @@ class UserSerializer(serializers.ModelSerializer):
       image = validated_data['image']
     )
     user.set_password(validated_data['password'])
+    user.is_active = False
     user.save()
     return user
-  
+
 
   class Meta:
     model = User
