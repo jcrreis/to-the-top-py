@@ -5,6 +5,16 @@ from rest_framework import status
 from users.models import User
 from .models import Game
 from faker import Factory
+import base64
+from django.core.files.base import ContentFile
+from django.core.files.uploadedfile import SimpleUploadedFile
+import io
+from base64 import b64decode
+from django.core.files.uploadedfile import InMemoryUploadedFile
+from io import BytesIO
+import tempfile
+from PIL import Image
+
 
 faker = Factory.create()
 
@@ -70,6 +80,21 @@ class GameTests ( APITestCase ):
     self.assertEqual(game.storeLink , '')
     self.assertEqual(game.trailerUrl , '')
     self.assertEqual(game.upvotes() ,0)
+
+  def test_create_game_with_image(self):
+    url = reverse('games-listCreate')
+    image = Image.new('RGBA', size=(50, 50), color=(155, 0, 0))
+    file = tempfile.NamedTemporaryFile(suffix='.png')
+    image.save(file)
+    with open(file.name, 'rb') as image:
+      data = {
+        'name': faker.name(),
+        'price':faker.pyfloat(positive = True),
+        'image':image
+      }
+      response = self.client.post(url,data,format='multipart')
+      self.assertEqual(response.status_code , status.HTTP_201_CREATED)
+
   
   def test_create_game_with_no_name(self):
     data = {
