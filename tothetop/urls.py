@@ -27,5 +27,5 @@ urlpatterns = [
     path('games/',include('games.urls')),
     path('users/',include('users.urls')),
     path('upvotes/',include('upvotes.urls')),
-    path('register/',RegisterUserView.as_view(),name= 'user'),
+    path('register/',RegisterUserView.as_view(),name= 'register'),
 ] +  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 
