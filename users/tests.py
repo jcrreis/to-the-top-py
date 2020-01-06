@@ -12,7 +12,7 @@ from io import StringIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from PIL import Image
 from django.core.files import File
-
+from django.core import mail
 
 class UserCreateClass(APITestCase):
   
@@ -58,11 +58,21 @@ class UserRegisterTestCase(APITestCase):
     self.assertEqual(response.status_code, status.HTTP_201_CREATED)
     self.assertEqual(User.objects.count(),1)
     self.assertEqual(User.objects.get().username,'joao')
+    activate_email = mail.outbox[0]
+    self.assertEqual(activate_email.subject,"Activate your account")
+    url_activate = activate_email.body.split("\n")[4]
+    args = url_activate.split("?")[1].split("&") #0 -> user=id #1 -> token=token
+    user = args[0].split("=")[1]
+    token = args[1].split("=")[1]
+    response = self.client.post("/users/activate/"+user+"/"+token+"/")
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
+
   
   def test_create_account_with_image(self):
     """
     Ensure we can create a new user account with an image
     """
+
     image = Image.new('RGBA', size=(50, 50), color=(155, 0, 0))
     file = tempfile.NamedTemporaryFile(suffix='.png')
     image.save(file)
@@ -72,6 +82,19 @@ class UserRegisterTestCase(APITestCase):
     self.assertEqual(User.objects.count(),1)
     self.assertEqual(User.objects.get().username,'joao')
     self.assertEqual(1,1)
+    activate_email = mail.outbox[0]
+    self.assertEqual(activate_email.subject,"Activate your account")
+    url_activate = activate_email.body.split("\n")[4]
+    args = url_activate.split("?")[1].split("&") #0 -> user=id #1 -> token=token
+    user = args[0].split("=")[1]
+    token = args[1].split("=")[1]
+    response = self.client.post("/users/activate/"+user+"/"+token+"/")
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
+   
+
+  def test_fail_activate_accout(self):
+    response = self.client.post("/users/activate/"+str(1)+"/"+str(1)+"/")
+    self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
     
   
   def test_username_is_required(self):
@@ -174,6 +197,9 @@ class UsersEndpointTestCase(APITestCase):
     response = self.client.get(self.url)
     self.assertEqual(response.status_code, status.HTTP_200_OK)
     self.assertEqual(len(response.data),2)
+  
+
+
 
     
 

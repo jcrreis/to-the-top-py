@@ -12,6 +12,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_text
 from django.http import HttpResponse
 from django.template.loader import render_to_string
+from rest_framework import status
 
 """
 /register/
@@ -50,9 +51,9 @@ class ActivateUser(generics.GenericAPIView):
     if user is not None and account_activation_token.check_token(user, self.kwargs['token']):
         user.is_active = True
         user.save()
-        return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
+        return HttpResponse('Thank you for your email confirmation. Now you can login your account.',status = status.HTTP_200_OK)
     else:
-        return HttpResponse('Activation link is invalid!')
+        return HttpResponse('Activation link is invalid!',status = status.HTTP_400_BAD_REQUEST)
     
 """
 /users/
