@@ -63,7 +63,59 @@ class UpvoteTests(APITestCase):
     self.assertEqual(response.status_code , status.HTTP_201_CREATED)
 
     response = self.client.get('/upvotes/games/'+ str(id))
-    self.assertEqual(response.status_code , status.HTTP_404_NOT_FOUND)
+    self.assertEqual(response.status_code , status.HTTP_200_OK)
+    response_dict = json.loads(response.content)
+    self.assertEqual(response_dict['upvotes'],0)
+  
+
+  def test_get_upvote_by_user(self):
+    size = self.client.get('/games/').data
+    id = size[0]['id']
+
+    response = self.client.post('/upvotes/games/'+ str(id))
+    self.assertEqual(response.status_code , status.HTTP_201_CREATED)
+
+    response = self.client.get('/user/')
+    url='/upvotes/users/'+str(response.data['pk'])
+
+    response = self.client.get(url)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
+    self.assertEqual(len(response.data),1)
+  
+
+  def test_get_upvote_by_user_with_game_details(self):
+    size = self.client.get('/games/').data
+    id = size[0]['id']
+    response = self.client.post('/upvotes/games/'+ str(id))
+    self.assertEqual(response.status_code , status.HTTP_201_CREATED)
+    response = self.client.get('/user/')
+
+    user = response.data['pk']
+    url='/upvotes/users/'+str(user)+'/games'
+
+    response = self.client.get(url)
+    response_dict = json.loads(response.content)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
+    self.assertEqual(response_dict[0]['id'],id)
+    self.assertEqual(response_dict[0]['user'],user)
+    self.assertEqual(len(response_dict),1)
+  
+  def test_get_all_uvpotes(self):
+    size = self.client.get('/games/').data
+    id = size[0]['id']
+    
+    response = self.client.post('/upvotes/games/'+ str(id))
+    self.assertEqual(response.status_code , status.HTTP_201_CREATED)
+
+    response = self.client.get('/upvotes/')
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
+    self.assertEqual(len(response.data),1)
+
+
+
+
+
+
 
 
 
