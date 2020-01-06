@@ -52,6 +52,9 @@ class UpvoteListByGame(generics.GenericAPIView):
       return JsonResponse(serializer.errors, status=409)
     
   def get(self, request, *args, **kwargs):
+    """
+    TODO Get not found , 404 error
+    """
     game = Game.objects.get(id=self.kwargs['pk'])
     serializer = GameSerializer(game)
     serializer.data['user'] = request.user.id
