@@ -4,7 +4,6 @@ from django.urls import reverse
 
 from rest_framework import status
 from .models import User
-import os
 import tempfile
 from django.test import Client
 from base64 import b64decode
