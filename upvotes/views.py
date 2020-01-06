@@ -67,10 +67,9 @@ class UpvoteListByGame(generics.GenericAPIView):
     serializer = GameSerializer(game)
     if(serializer.data['image'] != None):
       hostUrl = 'http://'+request.get_host()
-      print(serializer.data['image'])
       imgAbsolutePath = hostUrl+serializer.data['image']
       serializer._data['image'] = imgAbsolutePath
-    return JsonResponse(serializer.data,status=201,safe=False)
+    return JsonResponse(serializer.data,status=200,safe=False)
 
 
 
