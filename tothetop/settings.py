@@ -96,11 +96,6 @@ WSGI_APPLICATION = 'tothetop.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'tothetop',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': '0.0.0.0',
-        'PORT': ''
     }
 }
 
@@ -158,3 +153,9 @@ CORS_ALLOW_CREDENTIALS = True
 CSRF_TRUSTED_ORIGINS = [
     'localhost:3000',
 ]
+
+import dj_database_url
+
+DATABASES = {
+    'default': dj_database_url.config()
+}
