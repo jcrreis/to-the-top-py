@@ -21,8 +21,8 @@ pipelines:
 definitions: 
   services: 
     mysql: 
-      image: mysql:8.0.18
+      image: mysql:5.7
       variables: 
         MYSQL_DATABASE: 'tothetop' 
-        MYSQL_ROOT_PASSWORD: 'let_me_in'
+        MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
 
