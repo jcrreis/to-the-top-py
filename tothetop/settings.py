@@ -96,7 +96,6 @@ WSGI_APPLICATION = 'tothetop.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        
     }
 }
 
