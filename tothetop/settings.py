@@ -35,7 +35,7 @@ EMAIL_PORT = 587
 SECRET_KEY = 'd52fq=h2p-nvd7ja5%n#++h%kwky18j)n$hpi6s%l2fkq#8&fm'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
