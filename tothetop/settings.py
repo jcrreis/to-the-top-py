@@ -98,7 +98,7 @@ DATABASES = {
         'NAME': 'tothetop',
         'USER': 'root',
         'PASSWORD': '',
-        'HOST': 'localhost',
+        'HOST': '0.0.0.0',
         'PORT': ''
     }
 }

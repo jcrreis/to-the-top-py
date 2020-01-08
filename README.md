@@ -17,8 +17,8 @@ Load env
 > mysql -u root -e "create database tothetop"
 
 # Run migrations
-Create migrations
-> python manage.py makemigrations
+Create migrations for users
+> python manage.py makemigrations users
 
 Run migrations
 > python manage.py migrate
