@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import sys
+import urlparse
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -36,7 +38,7 @@ SECRET_KEY = 'd52fq=h2p-nvd7ja5%n#++h%kwky18j)n$hpi6s%l2fkq#8&fm'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -104,6 +106,7 @@ DATABASES = {
 }
 
 
+
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
@@ -149,7 +152,6 @@ STATIC_URL = '/static/'
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
-ALLOWED_HOSTS = ['*']
 
 
 CSRF_TRUSTED_ORIGINS = [
