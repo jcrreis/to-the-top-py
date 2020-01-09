@@ -54,7 +54,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'rest_auth',
-    'users.apps.UsersConfig',
+    'users',
     'tothetop.apps.TotheTopConfig'
 ]
 
