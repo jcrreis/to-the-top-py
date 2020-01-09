@@ -152,7 +152,7 @@ CORS_ALLOW_CREDENTIALS = True
 
 
 CSRF_TRUSTED_ORIGINS = [
-    'to-the-top-ng.herokuapp',
+    'to-the-top-ng.herokuapp.com',
 ]
 
 import dj_database_url
