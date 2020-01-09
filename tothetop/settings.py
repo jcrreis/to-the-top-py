@@ -123,6 +123,7 @@ ACCOUNT_EMAIL_REQUIRED = True
 OLD_PASSWORD_FIELD_ENABLED = True
 LOGOUT_ON_PASSWORD_CHANGE = False
 
+
 AUTH_USER_MODEL = 'users.User'
 
 # Internationalization
