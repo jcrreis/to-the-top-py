@@ -34,7 +34,7 @@ class RegisterUserView(generics.CreateAPIView):
     token = account_activation_token.make_token(user)
     message = render_to_string('email_confirm.html', {
                 'user': user,
-                'domain': 'localhost:4200',
+                'domain': 'to-the-top-ng.herokuapp.com',
                 'uid':urlsafe_base64_encode(force_bytes(user.pk)),
                 'token':account_activation_token.make_token(user),
             })
