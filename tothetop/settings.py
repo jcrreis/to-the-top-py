@@ -152,8 +152,7 @@ CORS_ALLOW_CREDENTIALS = True
 
 
 CSRF_TRUSTED_ORIGINS = [
-    'to-the-top-ng.herokuapp.com',
-
+'localhost:3000',
 ]
 
 SESSION_COOKIE_HTTPONLY = False
