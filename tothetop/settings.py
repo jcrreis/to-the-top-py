@@ -152,7 +152,7 @@ CORS_ALLOW_CREDENTIALS = True
 
 
 CSRF_TRUSTED_ORIGINS = [
-    'localhost:3000',
+    'localhost:4200',
 ]
 
 import dj_database_url
