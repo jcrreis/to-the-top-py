@@ -89,6 +89,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'tothetop.wsgi.application'
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+    ]
+}
+
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
@@ -150,16 +156,10 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
-CORS_ORIGIN_WHITELIST = [
-    'to-the-top-ng.herokuapp.com'
-]
-
 
 CSRF_TRUSTED_ORIGINS = [
 'to-the-top-ng.herokuapp.com',
 ]
-
-
 
 SESSION_COOKIE_HTTPONLY = False
 SESSION_COOKIE_SAMESITE = None
