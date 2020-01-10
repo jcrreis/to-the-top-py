@@ -154,19 +154,6 @@ CORS_ORIGIN_WHITELIST = [
     'to-the-top-ng.herokuapp.com'
 ]
 
-CORS_REPLACE_HTTPS_REFERER = True
-
-CORS_ALLOW_HEADERS = [
-    'accept',
-    'accept-encoding',
-    'authorization',
-    'content-type',
-    'dnt',
-    'origin',
-    'user-agent',
-    'x-csrftoken',
-    'x-requested-with',
-]
 
 CSRF_TRUSTED_ORIGINS = [
 'to-the-top-ng.herokuapp.com',
