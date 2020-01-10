@@ -155,17 +155,14 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_HEADERS = (
-'accept',
-'accept-encoding',
-'authorization',
-'content-type',
-'dnt',
-'origin',
-'user-agent',
-'x-csrftoken',
-'x-requested-with',
-'set-cookie',
+
+from corsheaders.defaults import default_headers
+
+CORS_ALLOW_HEADERS = default_headers + (
+    'xsrfheadername',
+    'xsrfcookiename',
+    'content-type',
+    'x-csrftoken',
 )
 
 SESSION_COOKIE_HTTPONLY = False
@@ -173,7 +170,6 @@ SESSION_COOKIE_SAMESITE = None
 
 CSRF_COOKIE_SAMESITE = None
 CSRF_COOKIE_HTTPONLY = False
-CSRF_COOKIE_SECURE = True
 
 
 
