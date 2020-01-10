@@ -179,7 +179,6 @@ SESSION_COOKIE_SAMESITE = None
 
 SESSION_COOKIE_DOMAIN = 'to-the-top-ng.herokuapp.com'
 CSRF_COOKIE_DOMAIN = 'to-the-top-ng.herokuapp.com'
-CSRF_USE_SESSIONS = True
 
 
 
