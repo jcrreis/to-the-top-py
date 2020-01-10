@@ -159,8 +159,6 @@ CORS_ALLOW_CREDENTIALS = True
 from corsheaders.defaults import default_headers
 
 CORS_ALLOW_HEADERS = default_headers + (
-    'xsrfheadername',
-    'xsrfcookiename',
     'content-type',
     'x-csrftoken',
 )
