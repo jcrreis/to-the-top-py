@@ -155,12 +155,7 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_HEADERS = (
-    'xsrfheadername',
-    'xsrfcookiename',
-    'content-type',
-    'XSRF-TOKEN',
-)
+
 
 CSRF_TRUSTED_ORIGINS = [
 'to-the-top-ng.herokuapp.com',
