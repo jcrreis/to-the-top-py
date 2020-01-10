@@ -150,12 +150,29 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
-
-CSRF_TRUSTED_ORIGINS = [
-'localhost:3000',
+CORS_ORIGIN_WHITELIST = [
+    'to-the-top-ng.herokuapp.com'
 ]
 
-CSRF_COOKIE_SECURE = False
+CORS_REPLACE_HTTPS_REFERER = True
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
+
+CSRF_TRUSTED_ORIGINS = [
+'to-the-top-ng.herokuapp.com',
+]
+
+
 
 SESSION_COOKIE_HTTPONLY = False
 SESSION_COOKIE_SAMESITE = None
