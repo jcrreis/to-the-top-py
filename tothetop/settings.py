@@ -168,17 +168,12 @@ CORS_ALLOW_HEADERS = (
 'set-cookie',
 )
 
-CSRF_TRUSTED_ORIGINS = [
-'to-the-top-ng.herokuapp.com',
-]
-
-
 SESSION_COOKIE_HTTPONLY = False
 SESSION_COOKIE_SAMESITE = None
 
 CSRF_COOKIE_SAMESITE = None
 CSRF_COOKIE_HTTPONLY = False
-X_FRAME_OPTIONS = 'ALLOW-FROM to-the-top-ng.herokuapp.com'
+CSRF_COOKIE_SECURE = True
 
 
 
