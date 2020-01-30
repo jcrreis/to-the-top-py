@@ -55,7 +55,8 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_auth',
     'users',
-    'tothetop.apps.TotheTopConfig'
+    'tothetop.apps.TotheTopConfig',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
