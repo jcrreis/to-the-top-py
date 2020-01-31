@@ -166,8 +166,9 @@ CSRF_COOKIE_HTTPONLY = False
 CSRF_COOKIE_SECURE = True
 
 
-
-
+CORS_ORIGIN_WHITELIST = (
+    'https://to-the-top-ng.herokuapp.com/',
+)
 
 
 import dj_database_url
