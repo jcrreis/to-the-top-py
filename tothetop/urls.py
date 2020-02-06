@@ -28,5 +28,5 @@ urlpatterns = [
     path('games/',csrf_exempt(include('games.urls'))),
     path('users/',csrf_exempt(include('users.urls'))),
     path('upvotes/',csrf_exempt(include('upvotes.urls'))),
-    path('register/',csrf_exempt(RegisterUserView.as_view(),name= 'register')),
+    path('register/',csrf_exempt(RegisterUserView.as_view()),name= 'register'),
 ] +  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 
