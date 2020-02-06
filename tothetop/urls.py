@@ -22,11 +22,11 @@ from django.conf.urls.static import static
 from django.views.decorators.csrf import csrf_exempt
 
 urlpatterns = [
-    path('', csrf_exempt(include('rest_auth.urls'))),
-    path(r'^', csrf_exempt(include('django.contrib.auth.urls'))),
+    path('', include('rest_auth.urls')),
+    path(r'^', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
-    path('games/',csrf_exempt(include('games.urls'))),
-    path('users/',csrf_exempt(include('users.urls'))),
-    path('upvotes/',csrf_exempt(include('upvotes.urls'))),
-    path('register/',csrf_exempt(RegisterUserView.as_view()),name= 'register'),
+    path('games/',include('games.urls')),
+    path('users/',include('users.urls')),
+    path('upvotes/',include('upvotes.urls')),
+    path('register/',RegisterUserView.as_view(),name= 'register'),
 ] +  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 
