@@ -156,9 +156,13 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 
 CORS_ALLOW_CREDENTIALS = True
-CORS_ORIGIN_WHITELIST = (
-    'https://to-the-top-ng.herokuapp.com',
-)
+CORS_ORIGIN_ALLOW_ALL = True
+
+if conf.CORS_ORIGIN_ALLOW_ALL and not conf.CORS_ALLOW_CREDENTIALS:
+            response[ACCESS_CONTROL_ALLOW_ORIGIN] = "*"
+else:
+    response[ACCESS_CONTROL_ALLOW_ORIGIN] = origin
+    patch_vary_headers(response, ['Origin'])
 
 SESSION_COOKIE_HTTPONLY = False
 SESSION_COOKIE_SAMESITE = None
