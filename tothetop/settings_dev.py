@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
-import sys
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -37,7 +36,7 @@ SECRET_KEY = 'd52fq=h2p-nvd7ja5%n#++h%kwky18j)n$hpi6s%l2fkq#8&fm'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -54,19 +53,18 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'rest_auth',
-    'users',
-    'tothetop.apps.TotheTopConfig',
-    'corsheaders',
+    'users.apps.UsersConfig',
+    'tothetop.apps.TotheTopConfig'
 ]
 
 MIDDLEWARE = [
-        'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
@@ -89,12 +87,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'tothetop.wsgi.application'
-#'rest_framework.authentication.SessionAuthentication',
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.BasicAuthentication'
-    ]
-}
 
 
 # Database
@@ -103,9 +95,13 @@ REST_FRAMEWORK = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'tothetop',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': '0.0.0.0',
+        'PORT': ''
     }
 }
-
 
 
 # Password validation
@@ -130,7 +126,6 @@ ACCOUNT_EMAIL_REQUIRED = True
 OLD_PASSWORD_FIELD_ENABLED = True
 LOGOUT_ON_PASSWORD_CHANGE = False
 
-
 AUTH_USER_MODEL = 'users.User'
 
 # Internationalization
@@ -151,28 +146,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
+ALLOWED_HOSTS = ['*']
 
 
-SESSION_COOKIE_HTTPONLY = False
-SESSION_COOKIE_SAMESITE = None
-
-CSRF_COOKIE_SAMESITE = None
-CSRF_COOKIE_HTTPONLY = False
-CSRF_COOKIE_NAME = "XSRF-TOKEN"
- 
-
-CORS_ORIGIN_WHITELIST = (
-    'https://to-the-top-ng.herokuapp.com/',
-)
-
-
-import dj_database_url
-
-DATABASES = {
-    'default': dj_database_url.config()
-}
+CSRF_TRUSTED_ORIGINS = [
+    'localhost:3000',
+]

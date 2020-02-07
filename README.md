@@ -17,14 +17,27 @@ Load env
 > mysql -u root -e "create database tothetop"
 
 # Run migrations
-Create migrations for users
-> python manage.py makemigrations users
 
-Run migrations
-> python manage.py migrate
+Make migrations for development
+> python manage.py makemigrations --settings=tothetop.settings_dev
 
-# Run server
-Launch the server
->python manage.py runserver
+Make migrations for production
+> python manage.py makemigrations --settings=tothetop.settings_prod
+
+
+
+Run migrations in development
+> python manage.py migrate --settings=tothetop.settings_dev
+
+Run migrations in production
+> python manage.py migrate --settings=tothetop.settings_prod
+
+
+# Run server 
+Launch the server in development
+>python manage.py runserver --settings=tothetop.settings_dev 
+
+Launch the server in production
+python manage.py runserver --settings=tothetop.settings_prod
 
 Server should be available at http://127.0.0.1:8000/
