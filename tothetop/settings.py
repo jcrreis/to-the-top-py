@@ -167,7 +167,7 @@ CSRF_COOKIE_NAME = "XSRF-TOKEN"
  
 
 CORS_ORIGIN_WHITELIST = (
-    'https://to-the-top-ng.herokuapp.com/',
+    'https://to-the-top-ng.herokuapp.com',
 )
 
 
