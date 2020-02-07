@@ -155,21 +155,18 @@ STATIC_URL = '/static/'
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 
-CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
-
-
+CORS_ORIGIN_WHITELIST = (
+    'https://to-the-top-ng.herokuapp.com',
+)
 
 SESSION_COOKIE_HTTPONLY = False
 SESSION_COOKIE_SAMESITE = None
 
 CSRF_COOKIE_SAMESITE = None
 CSRF_COOKIE_HTTPONLY = False
+CSRF_COOKIE_PATH = "https://to-the-top-ng.herokuapp.com"
  
-
-CORS_ORIGIN_WHITELIST = (
-    'https://to-the-top-ng.herokuapp.com',
-)
 
 
 import dj_database_url
