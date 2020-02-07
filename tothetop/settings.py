@@ -58,12 +58,13 @@ INSTALLED_APPS = [
     'tothetop.apps.TotheTopConfig',
     'corsheaders',
 ]
-   # 'django.middleware.csrf.CsrfViewMiddleware',
+
 MIDDLEWARE = [
         'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -158,12 +159,12 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
 
+
 SESSION_COOKIE_HTTPONLY = False
 SESSION_COOKIE_SAMESITE = None
 
 CSRF_COOKIE_SAMESITE = None
 CSRF_COOKIE_HTTPONLY = False
-CSRF_COOKIE_NAME = "XSRF-TOKEN"
  
 
 CORS_ORIGIN_WHITELIST = (
