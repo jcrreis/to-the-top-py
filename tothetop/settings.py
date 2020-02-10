@@ -89,10 +89,10 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'tothetop.wsgi.application'
-
+/Users/joaoreis/Documents/to-the-top/tothetop/csrfExemptAuth.py
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
+        'tothetop.csrfExemptAuth.CsrfExemptSessionAuthentication',
         'rest_framework.authentication.BasicAuthentication'
     ]
 }
@@ -168,7 +168,9 @@ SESSION_COOKIE_SAMESITE = None
 CSRF_COOKIE_SAMESITE = None
 CSRF_COOKIE_HTTPONLY = False
 CSRF_COOKIE_PATH = "https://to-the-top-ng.herokuapp.com"
- 
+CSRF_TRUSTED_ORIGINS = [
+  "https://to-the-top.herokuapp.com",
+]
 
 
 
