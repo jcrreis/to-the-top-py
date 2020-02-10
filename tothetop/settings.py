@@ -89,7 +89,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'tothetop.wsgi.application'
-/Users/joaoreis/Documents/to-the-top/tothetop/csrfExemptAuth.py
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'tothetop.csrfExemptAuth.CsrfExemptSessionAuthentication',
