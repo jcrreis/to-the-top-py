@@ -157,18 +157,18 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_WHITELIST = (
-    'https://to-the-top-ng.herokuapp.com',
+    'to-the-top-ng.herokuapp.com',
 )
-ALLOWED_HOSTS = ['https://to-the-top-ng.herokuapp.com']
+ALLOWED_HOSTS = ['to-the-top-ng.herokuapp.com']
 
 SESSION_COOKIE_HTTPONLY = False
 SESSION_COOKIE_SAMESITE = None
 
 CSRF_COOKIE_SAMESITE = None
 CSRF_COOKIE_HTTPONLY = False
-CSRF_COOKIE_PATH = "https://to-the-top-ng.herokuapp.com"
+CSRF_COOKIE_PATH = "to-the-top-ng.herokuapp.com"
 CSRF_TRUSTED_ORIGINS = [
-  "https://to-the-top.herokuapp.com",
+  "to-the-top.herokuapp.com",
 ]
 
 
