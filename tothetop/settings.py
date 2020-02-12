@@ -37,7 +37,6 @@ SECRET_KEY = 'd52fq=h2p-nvd7ja5%n#++h%kwky18j)n$hpi6s%l2fkq#8&fm'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -159,7 +158,7 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_WHITELIST = (
     'to-the-top-ng.herokuapp.com',
 )
-
+ALLOWED_HOSTS=['https://to-the-top-ng.herokuapp.com']
 SESSION_COOKIE_HTTPONLY = False
 SESSION_COOKIE_SAMESITE = None
 
